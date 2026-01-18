@@ -29,18 +29,17 @@ export function HowItWorksSection() {
   ]
 
   return (
-    <section id="how-it-works" className="py-24 bg-background">
+    <section id="how-it-works" className="py-24 bg-white">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
           <Badge variant="outline" className="mb-4">
             Simple Process
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Your Daily Rep for Better Communication
+            Clear communication in 4 quick steps - <span className="text-green-600">10x Faster with AI</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-balance">
-            Spokena makes articulation practice effortless. No complex exercises or lengthy courses - just speak, get
-            feedback, and improve consistently.
+            We make improving your articulation <span className="text-green-600 font-semibold">Blazing Fast</span>
           </p>
         </div>
 

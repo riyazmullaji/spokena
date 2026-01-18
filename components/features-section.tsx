@@ -6,44 +6,45 @@ export function FeaturesSection() {
   const features = [
     {
       icon: Mic,
-      title: "AI Speech Analysis",
+      title: "Practice-First System",
       description:
-        "Advanced AI analyzes your delivery, identifying filler words, pace issues, and clarity problems in real-time.",
-      badge: "Core Feature",
+        "Not a chat assistant. Spokena is built for daily practice—your communication gym. Just 1-2 minutes of speaking, every day.",
+      badge: "Core",
     },
     {
       icon: Brain,
-      title: "Focused Feedback",
+      title: "Focused, Actionable Feedback",
       description:
-        "No-fluff insights on structure, clarity, and persuasiveness. Get actionable advice that actually improves your speaking.",
+        "No-fluff insights. We tell you exactly what to improve and how. Real human communication, not robotic perfection.",
       badge: "Smart",
     },
     {
       icon: BarChart3,
-      title: "Progress Tracking",
+      title: "Progress Through Repetition",
       description:
-        "Watch your articulation improve over time with detailed analytics and personalized improvement recommendations.",
-      badge: "Analytics",
+        "Build confidence through daily reps. Track your improvement over time and sharpen your thinking under pressure.",
+      badge: "Habit",
     },
     {
       icon: Clock,
-      title: "Daily Habit Building",
+      title: "Designed for Busy Professionals",
       description:
-        "Just 1-2 minutes daily. Built for busy professionals who want consistent improvement without time commitment.",
-      badge: "Efficient",
-    },
-    {
-      icon: Target,
-      title: "Professional Focus",
-      description:
-        "Designed specifically for working professionals and public speakers, not generic language learning.",
+        "Working professionals and public speakers who already speak well but want to sound clearer and more confident.",
       badge: "Targeted",
     },
     {
+      icon: Target,
+      title: "Moments That Matter",
+      description:
+        "Built for meetings, talks, interviews—real-world situations where clear communication makes the difference.",
+      badge: "Impact",
+    },
+    {
       icon: Zap,
-      title: "Instant Results",
-      description: "See immediate feedback and start improving from day one. No waiting, no complex setup required.",
-      badge: "Fast",
+      title: "Self-Awareness & Control",
+      description:
+        "Understand your speaking patterns. Build awareness of filler words, pace, and structure. Take control of how you communicate.",
+      badge: "Growth",
     },
   ]
 
