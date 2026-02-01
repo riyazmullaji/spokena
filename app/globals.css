@@ -4,40 +4,51 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Updated to clean minimal design with white background and bright green accents */
-  --background: oklch(1 0 0); /* Pure White #ffffff */
-  --foreground: oklch(0.15 0 0); /* Dark Black #262626 */
-  --card: oklch(0.98 0 0); /* Off White #fafafa */
-  --card-foreground: oklch(0.15 0 0); /* Dark text for cards */
-  --popover: oklch(1 0 0); /* Pure White */
-  --popover-foreground: oklch(0.15 0 0); /* Dark text */
-  --primary: oklch(0.7 0.35 130); /* Bright Lime Green #00ff00 */
-  --primary-foreground: oklch(0.15 0 0); /* Dark text on green */
-  --secondary: oklch(0.96 0 0); /* Light Grey #f5f5f5 */
-  --secondary-foreground: oklch(0.15 0 0); /* Dark text */
-  --muted: oklch(0.96 0 0); /* Light Grey */
-  --muted-foreground: oklch(0.45 0 0); /* Medium grey for muted text */
-  --accent: oklch(0.7 0.35 130); /* Bright Lime Green */
-  --accent-foreground: oklch(0.15 0 0); /* Dark text */
-  --destructive: oklch(0.65 0.25 25); /* Red for errors */
-  --destructive-foreground: oklch(1 0 0); /* White text */
-  --border: oklch(0.9 0 0); /* Light border #e5e5e5 */
-  --input: oklch(1 0 0); /* White input fields */
-  --ring: oklch(0.7 0.35 130 / 0.3); /* Green ring for focus */
-  --chart-1: oklch(0.7 0.35 130); /* Bright Green */
-  --chart-2: oklch(0.15 0 0); /* Black */
-  --chart-3: oklch(0.45 0 0); /* Grey */
-  --chart-4: oklch(0.75 0 0); /* Light Grey */
-  --chart-5: oklch(0.85 0 0); /* Very Light Grey */
-  --radius: 0.5rem;
-  --sidebar: oklch(1 0 0); /* White */
-  --sidebar-foreground: oklch(0.15 0 0); /* Dark text */
-  --sidebar-primary: oklch(0.7 0.35 130); /* Bright Green */
-  --sidebar-primary-foreground: oklch(0.15 0 0); /* Dark text */
-  --sidebar-accent: oklch(0.96 0 0); /* Light Grey */
-  --sidebar-accent-foreground: oklch(0.15 0 0); /* Dark text */
-  --sidebar-border: oklch(0.9 0 0); /* Light border */
-  --sidebar-ring: oklch(0.7 0.35 130 / 0.3); /* Green ring */
+  /* Green color palette - Primary brand colors */
+  --primary: #16a34a;
+  --primary-foreground: #ffffff;
+  --accent: #22c55e;
+  --accent-foreground: #ffffff;
+
+  /* Background and surface colors */
+  --background: #fafafa;
+  --foreground: #1a1a2e;
+  --card: #ffffff;
+  --card-foreground: #1a1a2e;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a2e;
+  --muted: #f4f4f5;
+  --muted-foreground: #6b7280;
+  --secondary: #f0fdf4;
+  --secondary-foreground: #1a1a2e;
+
+  /* Destructive */
+  --destructive: oklch(0.65 0.25 25);
+  --destructive-foreground: #ffffff;
+
+  /* Border and input */
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #16a34a;
+
+  /* Border radius */
+  --radius: 12px;
+
+  /* Chart colors (green spectrum) */
+  --chart-1: #16a34a;
+  --chart-2: #22c55e;
+  --chart-3: #4ade80;
+  --chart-4: #86efac;
+  --chart-5: #bbf7d0;
+
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1a1a2e;
+  --sidebar-primary: #16a34a;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f0fdf4;
+  --sidebar-accent-foreground: #1a1a2e;
+  --sidebar-border: #e5e7eb;
+  --sidebar-ring: #16a34a;
 }
 
 .dark {
@@ -76,8 +87,8 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-dm-sans), "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -114,6 +125,36 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
+  --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
+  @keyframes spin-around {
+  0% {
+    transform: translateZ(0) rotate(0);
+    }
+  15%, 35% {
+    transform: translateZ(0) rotate(90deg);
+    }
+  65%, 85% {
+    transform: translateZ(0) rotate(270deg);
+    }
+  100% {
+    transform: translateZ(0) rotate(360deg);
+    }
+  }
+  @keyframes shimmer-slide {
+  to {
+    transform: translate(calc(100cqw - 100%), 0);
+    }
+  }
+  --animate-grid: grid 15s linear infinite;
+  @keyframes grid {
+    0% {
+      transform: translateY(-50%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
 }
 
 @layer base {
@@ -122,5 +163,11 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .animate-grid {
+    animation: grid 15s linear infinite;
   }
 }

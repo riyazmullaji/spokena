@@ -54,26 +54,24 @@ export function Navigation() {
   }
 
   return (
-    <nav className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-100 sticky top-0 z-50">
+    <nav className="flex items-center justify-between px-6 py-4 bg-background border-b border-border sticky top-0 z-50">
       <div className="flex items-center gap-8">
-        <Link href="/" className="text-xl font-bold text-green-600">
-          Spokena
+        <Link href="/" className="flex items-center gap-2 text-xl font-bold text-foreground">
+        
+          Spokena<span className="text-primary">.</span>
         </Link>
         <div className="hidden md:flex items-center gap-6">
-          <a href="#features" className="text-sm text-gray-600 hover:text-black transition-colors">
+          <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             Features
           </a>
-          <a href="#pricing" className="text-sm text-gray-600 hover:text-black transition-colors">
+          <a href="#how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            How it works
+          </a>
+          <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             Pricing
           </a>
-          <a href="#blog" className="text-sm text-gray-600 hover:text-black transition-colors">
+          <a href="#blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             Blog
-          </a>
-          <a href="#about" className="text-sm text-gray-600 hover:text-black transition-colors">
-            About Us
-          </a>
-          <a href="#contact" className="text-sm text-gray-600 hover:text-black transition-colors">
-            Contact Us
           </a>
         </div>
       </div>
@@ -87,7 +85,7 @@ export function Navigation() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="hidden sm:inline-flex bg-white border-gray-200 text-black hover:bg-gray-50"
+                    className="hidden sm:inline-flex"
                   >
                     Go to Practice
                   </Button>
@@ -95,7 +93,6 @@ export function Navigation() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="bg-white border-gray-200 text-black hover:bg-gray-50"
                   onClick={handleLogout}
                 >
                   Logout
@@ -104,20 +101,13 @@ export function Navigation() {
             ) : (
               <>
                 <Link href="/login">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="hidden sm:inline-flex bg-white border-gray-200 text-black hover:bg-gray-50"
-                  >
-                    Login
+                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex text-muted-foreground hover:text-foreground">
+                    Log in
                   </Button>
                 </Link>
                 <Link href="/login">
-                  <Button
-                    size="sm"
-                    className="bg-green-600 hover:bg-green-700 text-white"
-                  >
-                    Sign Up
+                  <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
+                    Start free
                   </Button>
                 </Link>
               </>

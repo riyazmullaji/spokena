@@ -1,53 +1,115 @@
-import { Check } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Check, X, HelpCircle } from "lucide-react"
+
+const comparisonRows = [
+  {
+    feature: "Daily micro-practice (60 seconds)",
+    spokena: true,
+    others: false,
+    othersLabel: null,
+    tooltip: true,
+  },
+  {
+    feature: "AI feedback on every recording",
+    spokena: true,
+    others: "limited",
+    othersLabel: "Limited",
+    tooltip: true,
+  },
+  {
+    feature: "Filler word detection",
+    spokena: true,
+    others: "limited",
+    othersLabel: "Limited",
+    tooltip: false,
+  },
+  {
+    feature: "Progress tracking over time",
+    spokena: true,
+    others: true,
+    othersLabel: null,
+    tooltip: false,
+  },
+  {
+    feature: "Speaking prompts library",
+    spokena: true,
+    others: true,
+    othersLabel: null,
+    tooltip: false,
+  },
+]
 
 export function WhyChooseSection() {
   return (
-    <section id="why-choose" className="bg-white py-20 px-6">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-black mb-12 text-center">
-          Why professionals choose Spokena?
+    <section id="why-choose" className="py-24 bg-background">
+      <div className="max-w-4xl mx-auto px-6">
+        <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-center">
+          Why learners choose Spokena
         </h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-          <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
-            <Check className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
-            <div>
-              <h3 className="font-semibold text-black mb-2">Skip the Grind - No More Manual Practice</h3>
-              <p className="text-gray-600 text-sm">Let AI analyze your speech automatically. Focus on speaking, not on tracking metrics yourself.</p>
-            </div>
+        <p className="text-lg text-muted-foreground text-center mb-12">
+          We built Spokena to be different from typical language apps. Here&apos;s how we compare.
+        </p>
+
+        <Card className="rounded-[var(--radius)] border-border overflow-hidden shadow-sm">
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b border-border bg-muted/30">
+                  <th className="text-left py-4 px-6 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Feature
+                  </th>
+                  <th className="text-left py-4 px-6 text-sm font-semibold text-primary">
+                    Spokena
+                  </th>
+                  <th className="text-left py-4 px-6 text-sm font-semibold text-foreground">
+                    Others
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {comparisonRows.map((row, i) => (
+                  <tr
+                    key={row.feature}
+                    className={
+                      i % 2 === 1
+                        ? "bg-secondary/30 border-b border-border"
+                        : "border-b border-border"
+                    }
+                  >
+                    <td className="py-4 px-6 text-sm text-foreground">
+                      <span className="inline-flex items-center gap-2">
+                        {row.feature}
+                        {row.tooltip && (
+                          <button
+                            type="button"
+                            className="text-muted-foreground hover:text-foreground"
+                            aria-label="More info"
+                          >
+                            <HelpCircle className="h-4 w-4" />
+                          </button>
+                        )}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6">
+                      {row.spokena === true ? (
+                        <Check className="h-5 w-5 text-primary" />
+                      ) : null}
+                    </td>
+                    <td className="py-4 px-6">
+                      {row.others === true ? (
+                        <Check className="h-5 w-5 text-primary" />
+                      ) : row.othersLabel ? (
+                        <span className="text-sm text-muted-foreground">{row.othersLabel}</span>
+                      ) : (
+                        <X className="h-5 w-5 text-muted-foreground" />
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          
-          <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
-            <Check className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
-            <div>
-              <h3 className="font-semibold text-black mb-2">Hyper-Relevant Feedback</h3>
-              <p className="text-gray-600 text-sm">Get insights tailored to your speaking style. No generic advice—only what matters for you.</p>
-            </div>
-          </div>
-          
-          <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
-            <Check className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
-            <div>
-              <h3 className="font-semibold text-black mb-2">Personalized Clarity Scores</h3>
-              <p className="text-gray-600 text-sm">Track your improvement with detailed scores for clarity, pace, filler words, and structure.</p>
-            </div>
-          </div>
-          
-          <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
-            <Check className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
-            <div>
-              <h3 className="font-semibold text-black mb-2">Real Practice, Not Theory</h3>
-              <p className="text-gray-600 text-sm">Practice-first system designed for real-world communication. Built for moments that matter.</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="text-center">
-          <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white">
-            Wait, there's more!
-          </Button>
-        </div>
+        </Card>
       </div>
     </section>
   )

@@ -1,19 +1,44 @@
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { ArrowRight, Sparkles } from "lucide-react"
 
 export function FinalCTASection() {
   return (
-    <section className="bg-black py-20 px-6">
-      <div className="max-w-4xl mx-auto text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-          No more unclear communication. Just <span className="text-green-500">clear speech in seconds</span>.
+    <section className="py-24 px-6 bg-background">
+      <div className="max-w-3xl mx-auto text-center">
+        <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-secondary px-4 py-2 mb-8">
+          <Sparkles className="h-4 w-4 text-primary" />
+          <span className="text-sm font-medium text-primary">Start your speaking journey</span>
+        </div>
+
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+          Spokena is for people who practice.{" "}
+          <span className="text-primary">Start practicing.</span>
         </h2>
-        
-        <Link href="/practice">
-          <Button size="lg" className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-12 py-6 text-lg font-semibold rounded-lg shadow-lg">
-            Try Spokena for free
+
+        <p className="text-lg text-muted-foreground mb-10">
+          Give future you just 60 seconds today. No credit card required to start.
+        </p>
+
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link href="/login">
+            <Button
+              size="lg"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-[var(--radius)] px-8 py-6 text-base"
+            >
+              Start practicing free
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
+          <Button
+            variant="secondary"
+            size="lg"
+            className="rounded-[var(--radius)] border border-border"
+            asChild
+          >
+            <a href="#contact">Talk to our team</a>
           </Button>
-        </Link>
+        </div>
       </div>
     </section>
   )
