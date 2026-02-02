@@ -350,7 +350,7 @@ export function RecordingInterface({ user, onAnalysisComplete }: RecordingInterf
         </div>
         <p className="text-center text-sm text-muted-foreground mb-2">Tap to start recording.</p>
         <p className="text-center text-sm text-muted-foreground mb-6">
-          Speak for 1-2 minutes. We&apos;ll analyze your delivery and give you focused feedback.
+          Just speak as you like. We&apos;ll give you focused feedback that helps you improve.
         </p>
 
         {/* Recording Status */}

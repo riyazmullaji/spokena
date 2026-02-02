@@ -60,20 +60,7 @@ export function Navigation() {
         
           Spokena<span className="text-primary">.</span>
         </Link>
-        <div className="hidden md:flex items-center gap-6">
-          <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            Features
-          </a>
-          <a href="#how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            How it works
-          </a>
-          <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            Pricing
-          </a>
-          <a href="#blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            Blog
-          </a>
-        </div>
+        
       </div>
 
       <div className="flex items-center gap-4">

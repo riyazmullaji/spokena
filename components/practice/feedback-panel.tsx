@@ -1,22 +1,22 @@
 "use client"
 
-import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import {
+  CheckCircle2,
   ChevronDown,
-  ChevronUp,
   ChevronLeft,
   ChevronRight,
-  CheckCircle2,
-  Lightbulb,
+  ChevronUp,
   Clock,
-  Gauge,
-  MessageSquare,
-  Key,
-  TrendingUp,
   FileText,
+  Gauge,
+  Key,
+  Lightbulb,
+  MessageSquare,
+  TrendingUp,
 } from "lucide-react"
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 
 export interface ApiAnalysisResponse {
   transcript: string
@@ -126,7 +126,7 @@ export function FeedbackPanel({ feedback }: FeedbackPanelProps) {
                   </p>
                   <div className="flex items-center gap-2 mt-2 text-sm text-primary font-medium">
                     <TrendingUp className="w-4 h-4" />
-                    <span>+8% from last session</span>
+                    
                   </div>
                 </div>
 
