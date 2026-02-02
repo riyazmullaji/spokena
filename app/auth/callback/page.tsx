@@ -86,7 +86,7 @@ export default function AuthCallbackPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-950 dark:to-blue-950">
       <div className="text-center p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-md mx-4">
-        <div className="text-green-500 text-6xl mb-4">🔄</div>
+        
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
           Completing Sign In...
         </h1>

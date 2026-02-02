@@ -3,12 +3,12 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { Mic, Play, RotateCcw, Square, RefreshCw, Pause } from "lucide-react"
-import { useState, useEffect, useRef } from "react"
-import { ApiAnalysisResponse } from "./feedback-panel"
-import { createSession } from "@/lib/sessionService"
-import { analyzeAudio } from "@/lib/apiService"
 import { saveAnalysis } from "@/lib/analysisService"
+import { analyzeAudio } from "@/lib/apiService"
+import { createSession } from "@/lib/sessionService"
+import { Mic, Pause, Play, RefreshCw, RotateCcw, Square } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import { ApiAnalysisResponse } from "./feedback-panel"
 
 const INSPIRATION_TOPICS = [
   "Describe your ideal weekend",
@@ -40,7 +40,9 @@ export function RecordingInterface({ user, onAnalysisComplete }: RecordingInterf
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showInspiration, setShowInspiration] = useState(false)
-  const [currentTopic, setCurrentTopic] = useState<string>("")
+  const [currentTopic, setCurrentTopic] = useState<string>(() =>
+    INSPIRATION_TOPICS[Math.floor(Math.random() * INSPIRATION_TOPICS.length)]
+  )
   
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
@@ -311,25 +313,33 @@ export function RecordingInterface({ user, onAnalysisComplete }: RecordingInterf
   }
 
   return (
-    <Card className="p-10 bg-card border-border min-h-[400px]">
-      <div className="text-center space-y-6 flex flex-col justify-center min-h-[320px]">
-        <div className="space-y-2">
-          <h2 className="text-2xl font-semibold text-foreground">Ready to Practice?</h2>
-          <p className="text-muted-foreground">
-            Speak for 1-2 minutes about any topic. We'll analyze your delivery and give you focused feedback.
-          </p>
+    <Card className="p-6 lg:p-8 bg-card border-border">
+      <div className="flex flex-col">
+        {/* Today's topic */}
+        <div className="rounded-xl bg-muted/50 border border-border p-4 mb-6">
+          <p className="text-sm font-medium text-muted-foreground mb-1">Today&apos;s topic</p>
+          <p className="text-lg font-semibold text-foreground mb-3">{currentTopic}</p>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={getNewTopic}
+            className="text-primary hover:text-primary/90 -ml-2 h-auto py-1"
+          >
+            <RefreshCw className="w-4 h-4 mr-2" />
+            New topic
+          </Button>
         </div>
 
-        {/* Recording Button with Green Border */}
-        <div className="flex justify-center">
+        {/* Recording Button */}
+        <div className="flex justify-center my-6">
           <div className="relative inline-block">
-            {/* Static green border */}
             <div className="absolute -inset-2 rounded-full">
-              <div className="w-full h-full rounded-full border-4 border-green-500"></div>
+              <div className="w-full h-full rounded-full border-4 border-primary/50" />
             </div>
             <Button
               onClick={toggleRecording}
               size="lg"
+              disabled={isAnalyzing}
               className={`relative w-24 h-24 rounded-full transition-all duration-300 z-10 ${
                 isRecording ? "bg-destructive hover:bg-destructive/90 animate-pulse" : "bg-primary hover:bg-primary/90"
               }`}
@@ -338,11 +348,15 @@ export function RecordingInterface({ user, onAnalysisComplete }: RecordingInterf
             </Button>
           </div>
         </div>
+        <p className="text-center text-sm text-muted-foreground mb-2">Tap to start recording.</p>
+        <p className="text-center text-sm text-muted-foreground mb-6">
+          Speak for 1-2 minutes. We&apos;ll analyze your delivery and give you focused feedback.
+        </p>
 
         {/* Recording Status */}
         {isRecording && (
-          <div className="space-y-3">
-            <div className="text-lg font-medium text-foreground">
+          <div className="space-y-3 mb-6">
+            <div className="text-center text-lg font-medium text-foreground">
               Recording... {formatTime(recordingTime)} / {formatTime(MAX_RECORDING_TIME)}
             </div>
             <Progress value={(recordingTime / MAX_RECORDING_TIME) * 100} className="w-full max-w-md mx-auto" />
@@ -352,7 +366,6 @@ export function RecordingInterface({ user, onAnalysisComplete }: RecordingInterf
         {/* Action Buttons After Recording */}
         {hasRecording && !isRecording && (
           <div className="flex flex-col items-center gap-4">
-            {/* Audio element for playback */}
             {audioUrl && (
               <audio
                 ref={audioRef}
@@ -361,34 +374,15 @@ export function RecordingInterface({ user, onAnalysisComplete }: RecordingInterf
                 className="hidden"
               />
             )}
-            
-            <div className="flex justify-center gap-4">
-              <Button 
-                variant="outline" 
-                size="lg"
-                onClick={handlePlayback}
-              >
-                {isPlaying ? (
-                  <>
-                    <Pause className="w-4 h-4 mr-2" />
-                    Pause
-                  </>
-                ) : (
-                  <>
-                    <Play className="w-4 h-4 mr-2" />
-                    Play Back
-                  </>
-                )}
+            <div className="flex flex-wrap justify-center gap-3">
+              <Button variant="outline" size="lg" onClick={handlePlayback}>
+                {isPlaying ? <><Pause className="w-4 h-4 mr-2" /> Pause</> : <><Play className="w-4 h-4 mr-2" /> Play Back</>}
               </Button>
-              <Button 
-                variant="outline" 
-                size="lg"
-                onClick={handleRecordAgain}
-              >
+              <Button variant="outline" size="lg" onClick={handleRecordAgain}>
                 <RotateCcw className="w-4 h-4 mr-2" />
                 Record Again
               </Button>
-              <Button 
+              <Button
                 size="lg"
                 onClick={handleAnalyze}
                 disabled={isAnalyzing || !user}
@@ -397,45 +391,15 @@ export function RecordingInterface({ user, onAnalysisComplete }: RecordingInterf
                 {isAnalyzing ? "Analyzing..." : "Analyze"}
               </Button>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Recording duration: {formatTime(recordingTime)}
-            </p>
-            
-            {/* Error Message */}
+            <p className="text-sm text-muted-foreground">Recording duration: {formatTime(recordingTime)}</p>
             {error && (
-              <div className="mt-4 p-3 rounded-md bg-destructive/10 border border-destructive/20">
+              <div className="mt-2 p-3 rounded-md bg-destructive/10 border border-destructive/20 w-full max-w-md">
                 <p className="text-sm text-destructive">{error}</p>
               </div>
             )}
           </div>
         )}
 
-        {/* Inspiration Feature - Single Topic */}
-        <div className="pt-6 border-t border-border">
-          {!showInspiration ? (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={showRandomTopic}
-              className="text-muted-foreground"
-            >
-              Need inspiration?
-            </Button>
-          ) : (
-            <div className="space-y-2">
-              <p className="text-sm text-foreground font-medium">{currentTopic}</p>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={getNewTopic}
-                className="text-xs text-muted-foreground"
-              >
-                <RefreshCw className="w-3 h-3 mr-1" />
-                New topic
-              </Button>
-            </div>
-          )}
-        </div>
       </div>
     </Card>
   )

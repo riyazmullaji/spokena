@@ -72,18 +72,20 @@ export default function PracticePage() {
   }
 
   return (
-    <main className="min-h-screen bg-green-50/30">
+    <main className="min-h-screen bg-background">
       <Navigation />
-      <div className="container mx-auto px-4 py-8 max-w-5xl">
-        <PracticeHeader />
-
-        <div className="mt-8 space-y-6">
-          <div className="w-full">
-            <RecordingInterface user={user} onAnalysisComplete={setFeedback} />
-          </div>
-          <div className="w-full">
+      <div className="container mx-auto px-4 py-6 lg:py-8 max-w-7xl">
+        {/* Two-column: left sticky recording, right feedback */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+          <aside className="lg:col-span-5 xl:col-span-4 lg:sticky lg:top-24">
+            <PracticeHeader />
+            <div className="mt-6">
+              <RecordingInterface user={user} onAnalysisComplete={setFeedback} />
+            </div>
+          </aside>
+          <section className="lg:col-span-7 xl:col-span-8">
             <FeedbackPanel feedback={feedback} />
-          </div>
+          </section>
         </div>
       </div>
     </main>

@@ -86,7 +86,7 @@ export default function WelcomePage() {
       <Card className="w-full max-w-2xl">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold text-green-600 dark:text-green-400">
-            Welcome to Spokena! 🎉
+            Welcome to Spokena! 
           </CardTitle>
           <CardDescription className="text-lg text-gray-600 dark:text-gray-400">
             Let's personalize your speaking clarity journey
