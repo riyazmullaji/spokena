@@ -50,6 +50,35 @@ export function RecordingInterface({ user, onAnalysisComplete }: RecordingInterf
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
 
+  // Refs for hotkey handlers so the keydown listener always calls latest logic
+  const toggleRecordingRef = useRef<() => void>(() => {})
+  const handleAnalyzeRef = useRef<() => void>(() => {})
+
+  // Hotkeys: Ctrl+Shift+R toggle recording, Ctrl+Shift+A analyze
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement
+      const isInput = target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT" || target.isContentEditable
+      if (isInput) return
+
+      const mod = event.ctrlKey || event.metaKey
+      const shift = event.shiftKey
+
+      if (mod && shift && event.key.toLowerCase() === "r") {
+        event.preventDefault()
+        toggleRecordingRef.current()
+        return
+      }
+      if (mod && shift && event.key.toLowerCase() === "a") {
+        event.preventDefault()
+        handleAnalyzeRef.current()
+        return
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [])
+
   // Timer effect
   useEffect(() => {
     if (isRecording) {
@@ -294,6 +323,9 @@ export function RecordingInterface({ user, onAnalysisComplete }: RecordingInterf
     }
   }
 
+  toggleRecordingRef.current = toggleRecording
+  handleAnalyzeRef.current = handleAnalyze
+
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
     const secs = seconds % 60
@@ -349,6 +381,9 @@ export function RecordingInterface({ user, onAnalysisComplete }: RecordingInterf
           </div>
         </div>
         <p className="text-center text-sm text-muted-foreground mb-2">Tap to start recording.</p>
+        <p className="text-center text-xs text-muted-foreground mb-1">
+          <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-[10px]">Ctrl</kbd>+<kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-[10px]">Shift</kbd>+<kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-[10px]">R</kbd> record · <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-[10px]">Ctrl</kbd>+<kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-[10px]">Shift</kbd>+<kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-[10px]">A</kbd> analyze
+        </p>
         <p className="text-center text-sm text-muted-foreground mb-6">
           Just speak as you like. We&apos;ll give you focused feedback that helps you improve.
         </p>
