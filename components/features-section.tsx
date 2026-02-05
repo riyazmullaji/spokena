@@ -2,8 +2,8 @@
 
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { ChevronRight, Clock, MessageSquare, Mic, Play, TrendingUp, Users } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { ChevronRight, MessageSquare, Mic, TrendingUp } from "lucide-react"
+import { useEffect, useRef } from "react"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -39,27 +39,31 @@ export function Features() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Pin the left side header
-      ScrollTrigger.create({
-        trigger: ".sticky-header-container",
-        start: "top 10%",
-        endTrigger: sectionRef.current,
-        end: "bottom 80%",
-        pin: true,
-        pinSpacing: false,
-      })
+      const isLargeScreen = () => window.innerWidth >= 1024
+
+      // Pin the left side header only on desktop (avoids mobile layout issues)
+      if (isLargeScreen()) {
+        ScrollTrigger.create({
+          trigger: ".sticky-header-container",
+          start: "top 10%",
+          endTrigger: sectionRef.current,
+          end: "bottom 80%",
+          pin: true,
+          pinSpacing: false,
+        })
+      }
 
       // Animate feature cards on scroll
       gsap.utils.toArray<HTMLElement>(".feature-card").forEach((card) => {
         gsap.from(card, {
           scrollTrigger: {
             trigger: card,
-            start: "top 80%",
+            start: "top 85%",
             toggleActions: "play none none reverse",
           },
           opacity: 0,
-          y: 50,
-          duration: 0.8,
+          y: 40,
+          duration: 0.6,
         })
       })
     }, sectionRef)
@@ -68,17 +72,17 @@ export function Features() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="py-24 bg-background relative overflow-visible">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col lg:flex-row gap-16">
+    <section ref={sectionRef} className="py-12 sm:py-16 lg:py-24 bg-background relative overflow-visible">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
           
           {/* LEFT SIDE: INTACT HEADER */}
           <div className="lg:w-1/3">
-            <div className="sticky-header-container py-10">
-              <h4 className="text-3xl font-bold text-foreground mb-6 leading-tight tracking-tight">
+            <div className="sticky-header-container py-6 lg:py-10">
+              <h4 className="text-2xl sm:text-3xl font-bold text-foreground mb-4 lg:mb-6 leading-tight tracking-tight">
                 Build speaking skills, One day at a time
               </h4>
-              <p className="text-l text-muted-foreground mb-10 leading-relaxed">
+              <p className="text-base sm:text-lg text-muted-foreground mb-6 lg:mb-10 leading-relaxed">
               Everything you need to practice speaking consistently, get better feedback, and see real improvement.
               </p>
           
@@ -86,30 +90,30 @@ export function Features() {
           </div>
 
           {/* RIGHT SIDE: SCROLLING FEATURES & COMPONENTS */}
-          <div className="lg:w-2/3 space-y-24">
+          <div className="lg:w-2/3 space-y-12 sm:space-y-16 lg:space-y-24">
             {features.map((feature) => (
-              <div key={feature.id} className="feature-card bg-secondary/20 rounded-[40px] p-10 md:p-16 border border-border/50">
-                <div className="flex flex-col md:flex-row gap-12 items-center">
+              <div key={feature.id} className="feature-card bg-secondary/20 rounded-2xl sm:rounded-3xl lg:rounded-[40px] p-6 sm:p-8 md:p-12 lg:p-16 border border-border/50">
+                <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
                   
                   {/* Text Hierarchy */}
-                  <div className="flex-1 order-2 md:order-1">
-                    <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded mb-4 uppercase tracking-widest">
+                  <div className="flex-1 order-2 md:order-1 w-full">
+                    <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded mb-3 md:mb-4 uppercase tracking-widest">
                       {feature.id}
                     </span>
-                    <h3 className="text-2xl font-bold mb-4 text-foreground">
+                    <h3 className="text-xl sm:text-2xl font-bold mb-3 md:mb-4 text-foreground">
                       {feature.title}
                     </h3>
-                    <p className="text-l text-muted-foreground mb-8">
+                    <p className="text-base sm:text-lg text-muted-foreground mb-6 md:mb-8">
                       {feature.description}
                     </p>
-                    <button className="flex items-center gap-2 text-foreground font-semibold hover:gap-3 transition-all">
+                    <button className="flex items-center gap-2 text-foreground font-semibold hover:gap-3 transition-all text-sm sm:text-base touch-manipulation">
                       {feature.link} <ChevronRight size={10} />
                     </button>
                   </div>
 
                   {/* Component / Illustration */}
-                  <div className="flex-1 order-1 md:order-2 w-full">
-                    <div className="bg-card rounded-3xl border border-border overflow-hidden min-h-[300px] flex items-center justify-center p-6 
+                  <div className="flex-1 order-1 md:order-2 w-full min-w-0">
+                    <div className="bg-card rounded-2xl sm:rounded-3xl border border-border overflow-hidden min-h-[200px] sm:min-h-[260px] lg:min-h-[300px] flex items-center justify-center p-4 sm:p-6 
     shadow-2xl shadow-primary/5 transition-shadow duration-300 hover:shadow-2xl hover:shadow-primary/10">
                       {feature.previewType === "practice" && (
                         <div className="w-full text-center">
@@ -138,9 +142,9 @@ export function Features() {
                       )}
 
                       {feature.previewType === "progress" && (
-                        <div className="w-full flex items-end justify-center gap-2 h-40">
+                        <div className="w-full flex items-end justify-center gap-1 sm:gap-2 h-32 sm:h-40">
                            {[40, 70, 50, 90, 60, 85].map((h, i) => (
-                             <div key={i} className="bg-primary/80 rounded-t-sm w-8" style={{ height: `${h}%` }} />
+                             <div key={i} className="bg-primary/80 rounded-t-sm w-6 sm:w-8 flex-shrink-0" style={{ height: `${h}%` }} />
                            ))}
                         </div>
                       )}
