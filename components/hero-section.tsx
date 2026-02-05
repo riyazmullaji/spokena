@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button"
 import { RetroGrid } from "@/components/ui/retro-grid"
-import { ArrowRight, Play, Mic, RefreshCw, Clock, Gauge, MessageSquare, Key, TrendingUp, CheckCircle2, Lightbulb, ChevronRight } from "lucide-react"
-import Link from "next/link"
 import { ShimmerButton } from "@/components/ui/shimmer-button"
+import { CheckCircle2, ChevronRight, Clock, Gauge, Key, Lightbulb, MessageSquare, Mic, Play, RefreshCw, TrendingUp } from "lucide-react"
+import Link from "next/link"
 
 export function HeroSection() {
   return (
@@ -33,7 +33,11 @@ export function HeroSection() {
               className="rounded-[var(--radius)] border-border bg-background"
               asChild
             >
-              <a href="#how-it-works">
+              <a
+                href="https://www.loom.com/share/e4aeb9b576df473d82c96157c368c7f4"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Play className="mr-2 h-4 w-4" />
                 Watch how it works
               </a>

@@ -1,9 +1,9 @@
+import { Github, Linkedin, Twitter } from "lucide-react"
 import Link from "next/link"
-import { Github, Twitter, Linkedin } from "lucide-react"
 
-const GITHUB_URL = "https://www.github.com/riyazmullaji/spokean"
+const GITHUB_URL = "https://github.com/riyazmullaji/Spokena-app"
 const TWITTER_URL = "https://twitter.com/spoknaApp"
-const LINKEDIN_URL = "https://www.linkedin.com/in/riyazmullaji"
+const LINKEDIN_URL = "https://linkedin.com/in/riyazmullaji"
 
 export function Footer() {
   return (

@@ -1,10 +1,13 @@
 'use client'
 
 import { Navigation } from "@/components/navigation"
+import { FeedbackFormDialog } from "@/components/practice/feedback-form-dialog"
 import { FeedbackPanel } from "@/components/practice/feedback-panel"
 import { PracticeHeader } from "@/components/practice/practice-header"
 import { RecordingInterface } from "@/components/practice/recording-interface"
+import { Button } from "@/components/ui/button"
 import { createClientComponentClient } from '@/lib/supabaseClient'
+import { MessageCircleHeart } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
@@ -12,6 +15,7 @@ export default function PracticePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [user, setUser] = useState<any>(null)
   const [feedback, setFeedback] = useState<any>(null)
+  const [feedbackDialogOpen, setFeedbackDialogOpen] = useState(false)
   const router = useRouter()
   const supabase = createClientComponentClient()
 
@@ -82,6 +86,22 @@ export default function PracticePage() {
             <div className="mt-6">
               <RecordingInterface user={user} onAnalysisComplete={setFeedback} />
             </div>
+            <div className="mt-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-foreground"
+                onClick={() => setFeedbackDialogOpen(true)}
+              >
+                <MessageCircleHeart className="w-4 h-4 mr-2" />
+                Feedback and Support
+              </Button>
+            </div>
+            <FeedbackFormDialog
+              open={feedbackDialogOpen}
+              onOpenChange={setFeedbackDialogOpen}
+              userId={user.id}
+            />
           </aside>
           <section className="lg:col-span-7 xl:col-span-8">
             <FeedbackPanel feedback={feedback} />

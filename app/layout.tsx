@@ -1,7 +1,7 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Sora, Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
+import type { Metadata } from "next"
+import { Inter, Sora } from "next/font/google"
+import type React from "react"
 import { Suspense } from "react"
 import "./globals.css"
 
@@ -31,6 +31,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${sora.variable} ${inter.variable}`}>
+      <head>
+        <script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="fb30fd17-59da-40bc-bd6e-25bd7e95ffc6"
+        />
+      </head>
       <body className="font-body antialiased">
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />
