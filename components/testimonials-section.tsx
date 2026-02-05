@@ -96,8 +96,8 @@ export function Testimonial() {
                 &quot;Spokena helped me prepare for job interviews in a way no other app could. The daily practice built my confidence, and the honest feedback showed me exactly what to work on. After 3 weeks, I stopped saying &apos;um&apos; in interviews without even thinking about it.&quot;
               </p>
               <div>
-                <p className="font-semibold text-foreground">Sarah Chen</p>
-                <p className="text-muted-foreground">Product Manager at Stripe</p>
+                <p className="font-semibold text-foreground">Deepak Seervi</p>
+                <p className="text-muted-foreground">Product Manager at Echari</p>
               </div>
             </div>
           </div>
