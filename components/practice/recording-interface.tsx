@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { saveAnalysis } from "@/lib/analysisService"
 import { analyzeAudio } from "@/lib/apiService"
 import { createSession } from "@/lib/sessionService"
 import { Mic, Pause, Play, RefreshCw, RotateCcw, Square } from "lucide-react"
@@ -274,24 +273,11 @@ export function RecordingInterface({ user, onAnalysisComplete }: RecordingInterf
       console.log('[DEBUG] Step 2 completed: API call succeeded', { hasTranscript: !!analysisResult.transcript, clarityScore: analysisResult.clarity_score })
 
       // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/a374c8e4-ecc9-4992-9d1f-f1fd3b8d4afa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'recording-interface.tsx:204',message:'Starting Step 3: saveAnalysis',data:{sessionId},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-      // #endregion
-      console.log('[DEBUG] Step 3: Saving analysis', { sessionId })
-
-      // Step 3: Save analysis to database
-      await saveAnalysis(sessionId, analysisResult)
-
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/a374c8e4-ecc9-4992-9d1f-f1fd3b8d4afa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'recording-interface.tsx:209',message:'Step 3 completed: analysis saved',data:{sessionId},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-      // #endregion
-      console.log('[DEBUG] Step 3 completed: analysis saved', { sessionId })
-
-      // #region agent log
       fetch('http://127.0.0.1:7242/ingest/a374c8e4-ecc9-4992-9d1f-f1fd3b8d4afa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'recording-interface.tsx:212',message:'Starting Step 4: display feedback',data:{hasCallback:!!onAnalysisComplete},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
       // #endregion
-      console.log('[DEBUG] Step 4: Displaying feedback', { hasCallback: !!onAnalysisComplete })
+      console.log('[DEBUG] Step 3: Displaying feedback', { hasCallback: !!onAnalysisComplete })
 
-      // Step 4: Display feedback
+      // Step 3: Display feedback
       if (onAnalysisComplete) {
         onAnalysisComplete(analysisResult)
       }

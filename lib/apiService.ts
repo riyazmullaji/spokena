@@ -1,7 +1,13 @@
 import { ApiAnalysisResponse } from '@/components/practice/feedback-panel'
 import { convertWebmToMp3, needsConversion } from './audioConverter'
+import { createClientComponentClient } from './supabaseClient'
 
-const API_ENDPOINT = 'https://riyyaz-spokena.hf.space/api/analyze'
+// Use a single env-driven endpoint for both local and production.
+// Example .env.local:
+// NEXT_PUBLIC_ANALYZE_API_URL=http://localhost:8000/api/analyze
+const API_ENDPOINT =
+  process.env.NEXT_PUBLIC_ANALYZE_API_URL ??
+  'https://riyyaz-spokena.hf.space/api/analyze'
 const API_TIMEOUT = 120000 // 2 minutes timeout
 
 /**
@@ -14,6 +20,15 @@ export async function analyzeAudio(
   sessionId: string,
   audioBlob: Blob
 ): Promise<ApiAnalysisResponse> {
+  const supabase = createClientComponentClient()
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+  const accessToken = session?.access_token
+  if (!accessToken) {
+    throw new Error('Authentication required. Please sign in again.')
+  }
+
   // #region agent log
   fetch('http://127.0.0.1:7242/ingest/a374c8e4-ecc9-4992-9d1f-f1fd3b8d4afa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'apiService.ts:12',message:'analyzeAudio started',data:{sessionId,audioBlobSize:audioBlob.size,audioBlobType:audioBlob.type,apiEndpoint:API_ENDPOINT,apiTimeout:API_TIMEOUT},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
   // #endregion
@@ -87,6 +102,9 @@ export async function analyzeAudio(
         method: 'POST',
         body: formData,
         signal: controller.signal,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       })
     } catch (fetchError: any) {
       console.error('[DEBUG] Fetch promise rejected:', fetchError)
