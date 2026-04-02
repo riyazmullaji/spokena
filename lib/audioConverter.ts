@@ -79,35 +79,17 @@ async function loadFFmpeg() {
  * @returns MP3 audio blob
  */
 export async function convertWebmToMp3(webmBlob: Blob): Promise<Blob> {
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/a374c8e4-ecc9-4992-9d1f-f1fd3b8d4afa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audioConverter.ts:48',message:'convertWebmToMp3 started',data:{webmBlobSize:webmBlob.size,webmBlobType:webmBlob.type},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-  // #endregion
-  console.log('[DEBUG] Starting WebM to MP3 conversion', { 
-    webmSize: webmBlob.size, 
-    webmType: webmBlob.type 
-  })
-
   try {
     const ffmpeg = await loadFFmpeg()
     
     const inputFileName = 'input.webm'
     const outputFileName = 'output.mp3'
 
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/a374c8e4-ecc9-4992-9d1f-f1fd3b8d4afa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audioConverter.ts:59',message:'Writing WebM file to FFmpeg FS',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
-    console.log('[DEBUG] Writing WebM file to FFmpeg virtual filesystem')
-    
     // Write the WebM blob to FFmpeg's virtual filesystem
     const { fetchFile, toBlobURL } = await import('@ffmpeg/util')
     const webmData = await fetchFile(webmBlob)
     await ffmpeg.writeFile(inputFileName, webmData)
 
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/a374c8e4-ecc9-4992-9d1f-f1fd3b8d4afa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audioConverter.ts:67',message:'Running FFmpeg conversion',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
-    console.log('[DEBUG] Running FFmpeg conversion: WebM -> MP3')
-    
     // Convert WebM to MP3
     // -i: input file
     // -vn: disable video (audio only)
@@ -140,11 +122,6 @@ export async function convertWebmToMp3(webmBlob: Blob): Promise<Blob> {
       throw new Error('FFmpeg instance does not have exec() or run() method')
     }
 
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/a374c8e4-ecc9-4992-9d1f-f1fd3b8d4afa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audioConverter.ts:82',message:'Reading MP3 file from FFmpeg FS',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
-    console.log('[DEBUG] Reading MP3 file from FFmpeg virtual filesystem')
-    
     // Read the MP3 file from FFmpeg's virtual filesystem
     const mp3Data = await ffmpeg.readFile(outputFileName)
     
@@ -156,21 +133,9 @@ export async function convertWebmToMp3(webmBlob: Blob): Promise<Blob> {
     // readFile returns Uint8Array, convert to Blob
     const mp3Blob = new Blob([mp3Data], { type: 'audio/mpeg' })
     
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/a374c8e4-ecc9-4992-9d1f-f1fd3b8d4afa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audioConverter.ts:92',message:'convertWebmToMp3 completed',data:{mp3BlobSize:mp3Blob.size},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
-    console.log('[DEBUG] WebM to MP3 conversion completed', { 
-      mp3Size: mp3Blob.size,
-      originalSize: webmBlob.size,
-      compressionRatio: ((1 - mp3Blob.size / webmBlob.size) * 100).toFixed(1) + '%'
-    })
-
     return mp3Blob
   } catch (error: any) {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/a374c8e4-ecc9-4992-9d1f-f1fd3b8d4afa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audioConverter.ts:100',message:'convertWebmToMp3 error',data:{errorName:error?.name,errorMessage:error?.message},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
-    console.error('[DEBUG] Error converting WebM to MP3:', error)
+    console.error('Error converting WebM to MP3:', error)
     throw new Error(`Failed to convert audio to MP3: ${error?.message || 'Unknown error'}`)
   }
 }

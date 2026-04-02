@@ -19,7 +19,7 @@ const FEEDBACK_TYPES = [
   "Others",
 ] as const
 
-const SUPPORT_EMAIL = "support@spokena.com"
+const SUPPORT_EMAIL = "spokena.app@gmail.com"
 
 interface FeedbackFormDialogProps {
   open: boolean

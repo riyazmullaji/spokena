@@ -1,7 +1,14 @@
 "use client"
 
+import { AnalyzeLoadingAnimation } from "@/components/practice/analyze-loading-animation"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { ANALYZE_LOADING_STEPS } from "@/lib/analyzeLoadingSteps"
+import {
+  SPEECH_FRAMEWORKS,
+  frameworkPillClass,
+  type SpeechFrameworkId,
+} from "@/lib/speechFrameworks"
 import {
   CheckCircle2,
   ChevronDown,
@@ -43,13 +50,58 @@ export interface ApiAnalysisResponse {
 
 interface FeedbackPanelProps {
   feedback?: ApiAnalysisResponse | null
+  isAnalyzing?: boolean
 }
 
-export function FeedbackPanel({ feedback }: FeedbackPanelProps) {
+function SpeechFrameworkEmpty() {
+  const [frameworkId, setFrameworkId] = useState<SpeechFrameworkId>("prep")
+  const active =
+    SPEECH_FRAMEWORKS.find((f) => f.id === frameworkId) ?? SPEECH_FRAMEWORKS[0]
+
+  return (
+    <div className="space-y-5 text-left font-body">
+      <p className="text-base font-medium leading-relaxed text-foreground">
+        Not sure what to speak? Take a breath, pick a structure below, and let it guide your minute.
+      </p>
+      <div className="rounded-xl border border-border bg-muted/30 p-5">
+        <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          Choose a framework
+        </p>
+        <div className="mb-4 flex flex-wrap gap-2">
+          {SPEECH_FRAMEWORKS.map((f) => (
+            <button
+              key={f.id}
+              type="button"
+              onClick={() => setFrameworkId(f.id)}
+              className={frameworkPillClass(frameworkId === f.id)}
+            >
+              {f.shortLabel}
+            </button>
+          ))}
+        </div>
+        <p className="font-heading text-base font-semibold text-foreground">{active.title}</p>
+        <p className="mt-1 text-sm text-muted-foreground">{active.tagline}</p>
+        <ul className="mt-4 space-y-3 border-t border-border pt-4 text-sm text-foreground/90">
+          {active.steps.map((s, i) => (
+            <li key={`${active.id}-${i}-${s.key}`}>
+              <span className="font-medium text-primary">{s.key}</span> — {s.detail}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <p className="text-sm text-muted-foreground">
+        When you finish, your clarity score and focus areas show how you are improving over time — not just today.
+      </p>
+    </div>
+  )
+}
+
+export function FeedbackPanel({ feedback, isAnalyzing = false }: FeedbackPanelProps) {
   const [currentImprovementIndex, setCurrentImprovementIndex] = useState(0)
   const [showExplanation, setShowExplanation] = useState(true)
   const [transcriptOpen, setTranscriptOpen] = useState(false)
   const [mobileTab, setMobileTab] = useState<"feedback" | "transcript">("feedback")
+  const [loadingStepIndex, setLoadingStepIndex] = useState(0)
 
   const data = feedback || null
   const improvements = data?.ai_analysis?.improvements || []
@@ -59,6 +111,17 @@ export function FeedbackPanel({ feedback }: FeedbackPanelProps) {
   useEffect(() => {
     setCurrentImprovementIndex(0)
   }, [feedback])
+
+  useEffect(() => {
+    if (!isAnalyzing) {
+      setLoadingStepIndex(0)
+      return
+    }
+    const id = setInterval(() => {
+      setLoadingStepIndex((i) => (i + 1) % ANALYZE_LOADING_STEPS.length)
+    }, 4500)
+    return () => clearInterval(id)
+  }, [isAnalyzing])
 
   const goToNext = () => {
     if (currentImprovementIndex < improvements.length - 1) {
@@ -117,6 +180,23 @@ export function FeedbackPanel({ feedback }: FeedbackPanelProps) {
       <div className="p-6 lg:p-8">
         {(mobileTab === "feedback" || !data?.transcript) && (
           <div className="space-y-6">
+            {isAnalyzing && !data ? (
+              <div
+                className="flex flex-col items-center justify-center py-10 text-center"
+                role="status"
+                aria-live="polite"
+              >
+                <div className="flex w-full max-w-[200px] justify-center">
+                  <AnalyzeLoadingAnimation />
+                </div>
+                <p className="mt-4 text-sm font-medium text-foreground">
+                  {ANALYZE_LOADING_STEPS[loadingStepIndex]}
+                </p>
+                <p className="mt-2 max-w-md text-xs text-muted-foreground">
+                  Usually under two minutes. Keep this tab open.
+                </p>
+              </div>
+            ) : null}
             {data ? (
               <>
                 {/* Session summary */}
@@ -124,9 +204,11 @@ export function FeedbackPanel({ feedback }: FeedbackPanelProps) {
                   <p className="text-foreground font-medium leading-relaxed">
                     {getClarityContext(data.clarity_score)}
                   </p>
-                  <div className="flex items-center gap-2 mt-2 text-sm text-primary font-medium">
-                    <TrendingUp className="w-4 h-4" />
-                    
+                  <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
+                    <TrendingUp className="w-4 h-4 shrink-0 text-primary" />
+                    <span>
+                      Each session scores clarity, pace, and fillers so you can see improvement over time.
+                    </span>
                   </div>
                 </div>
 
@@ -315,11 +397,11 @@ export function FeedbackPanel({ feedback }: FeedbackPanelProps) {
                   </div>
                 )}
               </>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground font-body">
-                <p>Complete a recording to see your feedback here.</p>
+            ) : !isAnalyzing ? (
+              <div className="py-8 font-body">
+                <SpeechFrameworkEmpty />
               </div>
-            )}
+            ) : null}
           </div>
         )}
 
@@ -333,8 +415,19 @@ export function FeedbackPanel({ feedback }: FeedbackPanelProps) {
         )}
 
         {mobileTab === "transcript" && !data?.transcript && (
-          <div className="text-center py-12 text-muted-foreground font-body">
-            <p>Complete a recording to see your transcript here.</p>
+          <div className="py-8 font-body">
+            {isAnalyzing ? (
+              <div className="flex flex-col items-center justify-center py-8" role="status">
+                <AnalyzeLoadingAnimation className="max-w-[180px]" />
+                <p className="mt-3 text-center text-sm text-muted-foreground">
+                  Transcript will appear when analysis finishes.
+                </p>
+              </div>
+            ) : (
+              <p className="text-center text-muted-foreground">
+                Complete a recording to see your transcript here.
+              </p>
+            )}
           </div>
         )}
       </div>
