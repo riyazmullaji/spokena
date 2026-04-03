@@ -3,6 +3,9 @@ import type { Metadata } from "next"
 import { Inter, Sora } from "next/font/google"
 import type React from "react"
 import { Suspense } from "react"
+
+import { getSiteUrl } from "@/lib/site"
+
 import "./globals.css"
 
 const sora = Sora({
@@ -17,11 +20,40 @@ const inter = Inter({
   display: "swap",
 })
 
+const siteUrl = getSiteUrl()
+const defaultTitle = "Spokena — Speaking skills that grow with practice"
+const defaultDescription =
+  "Build real speaking confidence with daily 60-second recordings and clear, focused AI feedback. No gimmicks, just consistent practice."
+
 export const metadata: Metadata = {
-  title: "Spokena - Speaking skills that grow with practice",
-  description:
-    "Build real speaking confidence with daily 60-second recordings and clear, focused AI feedback. No gimmicks, just consistent practice.",
-  generator: "v0.app",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: defaultTitle,
+    template: "%s | Spokena",
+  },
+  description: defaultDescription,
+  applicationName: "Spokena",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteUrl,
+    siteName: "Spokena",
+    title: defaultTitle,
+    description: defaultDescription,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: defaultTitle,
+    description: defaultDescription,
+  },
+  verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+    : undefined,
 }
 
 export default function RootLayout({
