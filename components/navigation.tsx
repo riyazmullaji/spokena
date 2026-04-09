@@ -57,10 +57,14 @@ export function Navigation() {
     <nav className="flex items-center justify-between px-6 py-4 bg-background border-b border-border sticky top-0 z-50">
       <div className="flex items-center gap-8">
         <Link href="/" className="flex items-center gap-2 text-xl font-bold text-foreground">
-        
           Spokena<span className="text-primary">.</span>
         </Link>
-        
+        <Link
+          href="/blog"
+          className="hidden text-sm font-medium text-muted-foreground hover:text-foreground sm:inline-block"
+        >
+          Blog
+        </Link>
       </div>
 
       <div className="flex items-center gap-4">

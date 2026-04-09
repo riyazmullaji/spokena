@@ -33,6 +33,10 @@ export const metadata: Metadata = {
   },
   description: defaultDescription,
   applicationName: "Spokena",
+  icons: {
+    icon: [{ url: "/favicon.ico" }],
+    shortcut: [{ url: "/favicon.ico" }],
+  },
   robots: {
     index: true,
     follow: true,
